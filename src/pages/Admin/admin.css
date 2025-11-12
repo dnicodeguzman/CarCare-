@@ -1,0 +1,59 @@
+.tableStaff{
+    margin-top: 5%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 95%;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 20px;
+    
+}
+
+th {
+    background-color: #181d28;
+    margin: 0px;
+    color: white;
+    width: 1920px;
+    height: 50px;
+    
+}
+
+tr {
+    text-align: center;
+    height: 55px;
+    transition: 0.2s;
+
+
+}
+
+tr:nth-child(even) {
+  background-color: #e7e7e7;
+}
+
+tr:hover {
+    background-color: #d1d1d1;
+}
+
+#btnEdit {
+    background-color: #228cfd;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    width: 80px;
+    gap: 10px;
+    
+}
+
+#btnDelete {
+    background-color: #e04141;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 20px;
+    width: 80px;
+    
+}
