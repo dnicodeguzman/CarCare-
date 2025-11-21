@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase"; // pa adjust nalang yung path if needed
 import './LoginPage.css';
@@ -7,6 +8,10 @@ import './LoginPage.css';
 
 
 //pa check nalang po kung tama lang - jtin
+=======
+import './LoginPage.css';
+
+>>>>>>> 5943c49 (pa test  crud)
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,6 +23,7 @@ const LoginPage = () => {
     setError('');
 
     try {
+<<<<<<< HEAD
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
@@ -35,11 +41,30 @@ const LoginPage = () => {
       } else {
         setError("Login failed. Try again.");
       }
+=======
+      // ready na for backend
+      const response = await fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        navigate('/home');
+      } else {
+        setError(data.message || 'Invalid credentials');
+      }
+    } catch (err) {
+      setError('Something went wrong. Please try again later.');
+>>>>>>> 5943c49 (pa test  crud)
     }
   };
 
   return (
     <div className="login-container">
+<<<<<<< HEAD
 
       
       <div className="login-left">
@@ -87,6 +112,27 @@ const LoginPage = () => {
         </div>
       </div>
 
+=======
+      <form className="login-form" onSubmit={handleSubmit}>
+        <h2>Login</h2>
+        {error && <p className="error-message">{error}</p>}
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+>>>>>>> 5943c49 (pa test  crud)
     </div>
   );
 };
