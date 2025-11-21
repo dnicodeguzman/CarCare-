@@ -1,122 +1,111 @@
-import { useState } from "react";
-import ServiceModal from "./ServiceModal";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router";
 import "./services.css";
 
 function Services() {
-  const [selectedService, setSelectedService] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [services, setServices] = useState([
-    {
-      id: 1,
-      icon: "🛢️",
-      name: "Change Oil / Filter Change",
-      description: "Replace engine oil and oil filter; includes basic inspection.",
-      price: "500.00"
-    },
-    {
-      id: 2,
-      icon: "⚙️",
-      name: "Engine Diagnostics",
-      description: "Computerized scanning and troubleshooting of engine performance issues.",
-      price: "800.00"
-    },
-    {
-      id: 3,
-      icon: "🛞",
-      name: "Tire Replacement",
-      description: "Replace worn tires and perform wheel balancing/alignment.",
-      price: "1200.00"
-    },
-    {
-      id: 4,
-      icon: "🛞",
-      name: "Wheel Alignment and Balancing",
-      description: "Adjust wheel angles for proper tire wear and steering control.",
-      price: "600.00"
-    },
-    {
-      id: 5,
-      icon: "🧹🪣",
-      name: "Aircon Cleaning",
-      description: "Complete air conditioning system cleaning and maintenance.",
-      price: "750.00"
-    },
-    {
-      id: 6,
-      icon: "⚙️",
-      name: "Transmission Services",
-      description: "Replace transmission fluid, check clutch and gear function.",
-      price: "1500.00"
-    },
-    {
-      id: 7,
-      icon: "🔧",
-      name: "Engine Overhaul",
-      description: "Complete engine disassembly and rebuild for performance restoration.",
-      price: "5000.00"
-    },
-    {
-      id: 8,
-      icon: "🔧",
-      name: "Underchassis Inspection",
-      description: "Examine suspension, shocks, bushings, and control arms.",
-      price: "400.00"
-    }
-  ]);
+ 
 
-  const handleViewDetails = (service) => {
-    setSelectedService(service);
-    setIsModalOpen(true);
-  };
-
-  const handleSaveService = (updatedService) => {
-    setServices(services.map(service => 
-      service.id === updatedService.id ? updatedService : service
-    ));
-  };
-
-  const handleDeleteService = (serviceId) => {
-    setServices(services.filter(service => service.id !== serviceId));
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedService(null);
-  };
-
-
-  
   return (
     <>
-      <main>
-        <div className="cardServices">
-          {services.map((service) => (
-            <div key={service.id} className="cards">
-              <div className="cardsIcon">{service.icon}</div>
-              <h2>{service.name}</h2>
-              <p>{service.description}</p>
-              <div className="service-actions">
-                <button 
-                  className="btn-view-details"
-                  onClick={() => handleViewDetails(service)}
-                >
-                  View Details
-                </button>
-              </div>
-            </div>
-          ))}
+        <main>
+        <div class="cardServices">
+          <div class="cards">
+            <div class="cardsIcon"> 🛢️ </div>
+            <h2> Change Oil / Filter Change </h2>
+            <p>
+              Replace engine oil and oil filter; includes basic inspection.
+            </p>
+          </div>
+
+          <div class="cards">
+            <div class="cardsIcon"> ⚙️ </div>
+            <h2> Engine Diagnostics </h2>
+            <p>
+              Computerized scanning and troubleshooting of engine performance issues.
+            </p>
+          </div>
+
+          <div class="cards">
+            <div class="cardsIcon"> 🛞 </div>
+            <h2> Tire Replacement </h2>
+            <p> Replace worn tires and perform wheel balancing/alignment. </p>
+          </div>
+
+          <div class="cards">
+            <div class="cardsIcon">🛞</div>
+            <h2>Wheel Alignment and Balancing </h2>
+            <p>
+              Adjust wheel angles for proper tire wear and steering control.
+            </p>
+          </div>
+
+           <div class="cards">
+            <div class="cardsIcon">🧹🪣 </div>
+            <h2> Aircon Cleaning </h2>
+            <p>
+              View all previous services done on each car to keep maintenance consistent.
+            </p>
+          </div>
+
+          <div class="cards">
+            <div class="cardsIcon"> ⚙️ </div>
+            <h2> Transmission Services </h2>
+            <p>
+              Replace transmission fluid, check clutch and gear function.
+            </p>
+          </div>
+
+          <div class="cards">
+            <div class="cardsIcon"> 🔧 </div>
+            <h2> Engine Overhaul </h2>
+            <p>
+             Complete engine disassembly and rebuild for performance restoration.
+            </p>
+          </div>
+
+           <div class="cards">
+            <div class="cardsIcon"> 🔧 </div>
+            <h2> Underchassis Inspection </h2>
+            <p>
+            Examine suspension, shocks, bushings, and control arms.
+            </p>
+          </div>
+
+           <div class="cards">
+            <div class="cardsIcon"> 🔧 </div>
+            <h2> Underchassis Inspection </h2>
+            <p>
+            Examine suspension, shocks, bushings, and control arms.
+            </p>
+          </div>
+
+           <div class="cards">
+            <div class="cardsIcon"> 🔧 </div>
+            <h2> Underchassis Inspection </h2>
+            <p>
+            Examine suspension, shocks, bushings, and control arms.
+            </p>
+          </div>
+
+           <div class="cards">
+            <div class="cardsIcon"> 🔧 </div>
+            <h2> Underchassis Inspection </h2>
+            <p>
+            Examine suspension, shocks, bushings, and control arms.
+            </p>
+          </div>
+          
+           <div class="cards">
+            <div class="cardsIcon"> 🔧 </div>
+            <h2> Underchassis Inspection </h2>
+            <p>
+            Examine suspension, shocks, bushings, and control arms.
+            </p>
+          </div>
+
         </div>
-        
-      
       </main>
 
-      <ServiceModal
-        service={selectedService}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSave={handleSaveService}
-        onDelete={handleDeleteService}
-      />
     </>
   );
 }

@@ -1,19 +1,32 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from './pages/Login/LoginPage.jsx';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { useState } from 'react';
 import Home from './pages/Home/Home';
-import './App.css';
+import Services from './pages/Services/Services.jsx';
+import Appointment from './pages/Appointment/Appointment';
+import Admin from './pages/Admin/Admin';
+import Navbar from './components/Navbar/Navbar';
 
-const App = () => {
+function App() {
+  const [mechanics, setMechanics] = useState([
+    { id: 1, name: "Dan Nico De Guzman", specialization: "Mitsubishi Mirage 2022", contact: "Tire Replacement", address: "Nov 10, 2025" },
+    { id: 2, name: "Andre Lean Delfin", specialization: "Ford Everest 2017", contact: "Battery Check-Up", address: "Nov 10, 2025" },
+    { id: 3, name: "Kurt Ivan Reyes", specialization: "Toyota Fortuner 2012", contact: "Wheel Alignment", address: "Nov 10, 2025" },
+  ]);
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
-    </Router>
+    <div className='container'>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/home' element={<Home />} />
+          <Route path='/services' element={<Services />} />
+          <Route path='/appointment' element={<Appointment mechanics={mechanics} />} />
+          <Route path='/admin' element={<Admin mechanics={mechanics} setMechanics={setMechanics} />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
-};
+}
 
 export default App;
