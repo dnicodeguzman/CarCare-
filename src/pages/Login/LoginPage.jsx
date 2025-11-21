@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase"; // adjust path if needed
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -13,69 +15,75 @@ const LoginPage = () => {
     setError('');
 
     try {
-      const response = await fetch('https://dummyjson.com/users');
-      const data = await response.json();
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-      if (response.ok) {
-        const user = data.users.find(u => u.email === email && u.password === password);
-        if (user) {
-          localStorage.setItem('token', 'dummy-token-' + user.id);
-          navigate('/home');
-        } else {
-          setError('Invalid credentials');
-        }
-      } else {
-        setError('Failed to fetch user data');
-      }
+      
+      const token = await user.getIdToken();
+      localStorage.setItem("token", token);
+
+      navigate('/home');
+
     } catch (err) {
-      setError('Something went wrong. Please try again later.');
+      if (err.code === "auth/user-not-found") {
+        setError("No account found with that email.");
+      } else if (err.code === "auth/wrong-password") {
+        setError("Incorrect password.");
+      } else {
+        setError("Login failed. Try again.");
+      }
     }
   };
 
   return (
     <div className="login-container">
-     
+
+      
       <div className="login-left">
         <div className="login-form-container">
+
           <h1>Login</h1>
+
+          {error && <p className="error-message">{error}</p>}
+
           <form className="login-form" onSubmit={handleSubmit}>
-            {error && <p className="error-message">{error}</p>}
-            
             <div className="form-group">
-              <label htmlFor="email">Email</label>
+              <label>Email</label>
               <input
-                id="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-            
+
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label>Password</label>
               <input
-                id="password"
                 type="password"
-                placeholder="Enter your password"
+                placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
-            
-            <button type="submit" className="login-button">Login</button>
+
+            <button className="login-button" type="submit">
+              Login
+            </button>
           </form>
+
         </div>
       </div>
 
-   
+      
       <div className="login-right">
         <div className="image-content">
-          <span>Image</span>
+          <span>Welcome Back!</span>
         </div>
       </div>
+
     </div>
   );
 };
