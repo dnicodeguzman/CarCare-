@@ -1,47 +1,3 @@
-<<<<<<< HEAD
-import { useState } from "react";
-import "./admin.css";
-
-function Admin({ mechanics, setMechanics }) {
-  const [showForm, setShowForm] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [currentID, setCurrentID] = useState(null);
-  const [formData, setFormData] = useState({ name: "", specialization: "", contact: "", address: "" });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleAddMechanic = (e) => {
-    e.preventDefault();
-    const newMechanic = { id: mechanics.length + 1, ...formData };
-    setMechanics([...mechanics, newMechanic]);
-    setFormData({ name: "", specialization: "", contact: "", address: "" });
-    setShowForm(false);
-  };
-
-  const handleEdit = (mechanic) => {
-    setIsEditing(true);
-    setCurrentID(mechanic.id);
-    setFormData({ name: mechanic.name, specialization: mechanic.specialization, contact: mechanic.contact, address: mechanic.address });
-    setShowForm(true);
-  };
-
-  const handleSaveEdit = (e) => {
-    e.preventDefault();
-    setMechanics((prev) => prev.map((m) => (m.id === currentID ? { ...m, ...formData } : m)));
-    setIsEditing(false);
-    setCurrentID(null);
-    setFormData({ name: "", specialization: "", contact: "", address: "" });
-    setShowForm(false);
-  };
-
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this mechanic?")) {
-      setMechanics((prev) => prev.filter((m) => m.id !== id));
-    }
-=======
 import { useState, useEffect } from "react";
 import { ref, push, onValue, remove, update } from "firebase/database";
 import { db } from "../../firebase";
@@ -77,11 +33,13 @@ function Admin() {
 
   const handleSubmit = e => {
     e.preventDefault();
+
     if (editId) {
       update(ref(db, "mechanics/" + editId), formData);
     } else {
       push(ref(db, "mechanics"), formData);
     }
+
     setFormData({ name: "", specialization: "", contact: "", address: "" });
     setEditId(null);
     setShowForm(false);
@@ -89,38 +47,19 @@ function Admin() {
 
   const handleEdit = mech => {
     setEditId(mech.id);
-    setFormData({
-      name: mech.name,
-      specialization: mech.specialization,
-      contact: mech.contact,
-      address: mech.address
-    });
+    setFormData(mech);
     setShowForm(true);
   };
 
   const handleDelete = id => {
-    remove(ref(db, "mechanics/" + id));
->>>>>>> 5943c49 (pa test  crud)
+    if (window.confirm("Are you sure you want to delete this mechanic?")) {
+      remove(ref(db, "mechanics/" + id));
+    }
   };
 
   return (
     <div className="admin-container">
-<<<<<<< HEAD
-      <button className="btnAddMechanic" onClick={() => { setIsEditing(false); setShowForm(true); setFormData({ name: "", specialization: "", contact: "", address: "" }); }}>Add Mechanic</button>
-      {showForm && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>{isEditing ? "Edit Mechanic" : "Add New Mechanic"}</h2>
-            <form onSubmit={isEditing ? handleSaveEdit : handleAddMechanic}>
-              <input type="text" name="name" placeholder="Mechanic Name" value={formData.name} onChange={handleInputChange} required />
-              <input type="text" name="specialization" placeholder="Specialization" value={formData.specialization} onChange={handleInputChange} required />
-              <input type="text" name="contact" placeholder="Contact" value={formData.contact} onChange={handleInputChange} required />
-              <input type="text" name="address" placeholder="Address" value={formData.address} onChange={handleInputChange} required />
-              <div className="form-buttons">
-                <button type="submit">{isEditing ? "Save Changes" : "Add Mechanic"}</button>
-                <button type="button" onClick={() => setShowForm(false)} className="btnCancel">Cancel</button>
-              </div>
-=======
+
       <button className="btnAddMechanic" onClick={() => setShowForm(true)}>
         Add Mechanic
       </button>
@@ -128,46 +67,53 @@ function Admin() {
       {showForm && (
         <div className="modal-overlay">
           <div className="modal-content">
+            <h2>{editId ? "Edit Mechanic" : "Add Mechanic"}</h2>
+
             <form onSubmit={handleSubmit}>
-              <input name="name" value={formData.name} onChange={handleInputChange} required />
-              <input name="specialization" value={formData.specialization} onChange={handleInputChange} required />
-              <input name="contact" value={formData.contact} onChange={handleInputChange} required />
-              <input name="address" value={formData.address} onChange={handleInputChange} required />
-              <button type="submit">{editId ? "Save" : "Add"}</button>
->>>>>>> 5943c49 (pa test  crud)
+              <input
+                name="name"
+                placeholder="Mechanic Name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+              />
+
+              <input
+                name="specialization"
+                placeholder="Specialization"
+                value={formData.specialization}
+                onChange={handleInputChange}
+                required
+              />
+
+              <input
+                name="contact"
+                placeholder="Contact"
+                value={formData.contact}
+                onChange={handleInputChange}
+                required
+              />
+
+              <input
+                name="address"
+                placeholder="Address"
+                value={formData.address}
+                onChange={handleInputChange}
+                required
+              />
+
+              <div className="form-buttons">
+                <button type="submit">
+                  {editId ? "Save Changes" : "Add Mechanic"}
+                </button>
+                <button type="button" className="btnCancel" onClick={() => setShowForm(false)}>
+                  Cancel
+                </button>
+              </div>
             </form>
           </div>
         </div>
       )}
-<<<<<<< HEAD
-      <div className="tableStaff">
-        <table>
-          <thead>
-            <tr>
-              <th>Mechanic Name</th>
-              <th>Specialization</th>
-              <th>Contact</th>
-              <th>Address</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {mechanics.map((mechanic) => (
-              <tr key={mechanic.id}>
-                <td>{mechanic.name}</td>
-                <td>{mechanic.specialization}</td>
-                <td>{mechanic.contact}</td>
-                <td>{mechanic.address}</td>
-                <td>
-                  <button id="btnEdit" onClick={() => handleEdit(mechanic)}>Edit</button>
-                  <button id="btnDelete" onClick={() => handleDelete(mechanic.id)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-=======
 
       <table>
         <thead>
@@ -179,6 +125,7 @@ function Admin() {
             <th>Actions</th>
           </tr>
         </thead>
+
         <tbody>
           {mechanics.map(m => (
             <tr key={m.id}>
@@ -194,7 +141,7 @@ function Admin() {
           ))}
         </tbody>
       </table>
->>>>>>> 5943c49 (pa test  crud)
+
     </div>
   );
 }
